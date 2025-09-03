@@ -18,7 +18,7 @@ const MarkFinalTime = (props: {
 
   return (
     <tr>
-      <td className="poll-table-choose-text">Final time</td>
+      <td className="poll-table-choose-text">Finální termín</td>
       {times.map((time) => (
         <td key={time.start} className="poll-slot-checkbox-final-cell">
           <Form.Check
