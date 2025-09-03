@@ -32,6 +32,7 @@ const New = (): JSX.Element => {
     },
   });
 
+  // ✅ OPRAVA: Přepracovaný useEffect, který čeká na načtení kalendáře
   useEffect(() => {
     const translations: TranslationMap = {
       Sun: "Ne", Mon: "Po", Tue: "Út", Wed: "St", Thu: "Čt", Fri: "Pá", Sat: "So",
@@ -49,7 +50,6 @@ const New = (): JSX.Element => {
           el.textContent = `${translations[day]} ${num}`;
         }
       });
-
       const intervalEl = document.querySelector(".rat-AvailableTimes_interval");
       if (intervalEl) {
         let text = intervalEl.textContent || "";
@@ -61,10 +61,8 @@ const New = (): JSX.Element => {
         // eslint-disable-next-line no-param-reassign
         intervalEl.textContent = text;
       }
-      
       const allDayEl = document.querySelector(".rat-Week_allDayLabel");
       if (allDayEl) {
-        // ✅ OPRAVA: Použití destrukturace pro splnění pravidla `prefer-destructuring`
         const { textContent } = allDayEl;
         if (textContent && translations[textContent]) {
           // eslint-disable-next-line no-param-reassign
@@ -73,19 +71,30 @@ const New = (): JSX.Element => {
       }
     };
 
-    const observer = new MutationObserver(() => {
-        translateCalendar();
-    });
-    
-    const calendarElement = document.querySelector('.rat-AvailableTimes_component');
-    if (calendarElement) {
-        observer.observe(calendarElement, {
-            childList: true,
-            subtree: true
-        });
-    }
+    // Vytvoříme interval, který bude každých 100ms kontrolovat, zda už kalendář existuje
+    const intervalId = setInterval(() => {
+      const calendarElement = document.querySelector('.rat-AvailableTimes_component');
+      
+      // Pokud element najdeme...
+      if (calendarElement) {
+        // ...zastavíme interval, abychom zbytečně nekontrolovali dál.
+        clearInterval(intervalId);
 
-    return () => observer.disconnect();
+        // Provedeme první překlad.
+        translateCalendar();
+
+        // A nastavíme MutationObserver, aby sledoval další změny (klikání na šipky).
+        const observer = new MutationObserver(translateCalendar);
+        observer.observe(calendarElement, {
+          childList: true,
+          subtree: true,
+        });
+      }
+    }, 100);
+
+    // Důležitý úklid: pokud uživatel opustí stránku dříve, než se kalendář načte,
+    // interval se zruší.
+    return () => clearInterval(intervalId);
 
   }, []);
 
