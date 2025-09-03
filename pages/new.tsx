@@ -32,7 +32,6 @@ const New = (): JSX.Element => {
     },
   });
 
-  // ✅ OPRAVA: Přepracovaný useEffect, který čeká na načtení kalendáře
   useEffect(() => {
     const translations: TranslationMap = {
       Sun: "Ne", Mon: "Po", Tue: "Út", Wed: "St", Thu: "Čt", Fri: "Pá", Sat: "So",
@@ -71,20 +70,30 @@ const New = (): JSX.Element => {
       }
     };
 
-    // Vytvoříme interval, který bude každých 100ms kontrolovat, zda už kalendář existuje
     const intervalId = setInterval(() => {
       const calendarElement = document.querySelector('.rat-AvailableTimes_component');
       
-      // Pokud element najdeme...
       if (calendarElement) {
-        // ...zastavíme interval, abychom zbytečně nekontrolovali dál.
         clearInterval(intervalId);
-
-        // Provedeme první překlad.
         translateCalendar();
 
-        // A nastavíme MutationObserver, aby sledoval další změny (klikání na šipky).
-        const observer = new MutationObserver(translateCalendar);
+        // ✅ OPRAVA ZDE:
+        // Vytvoříme observer, který reaguje na změny...
+        const observer = new MutationObserver(() => {
+          // ...ale hned na začátku ho odpojíme, aby neviděl naše vlastní změny.
+          observer.disconnect();
+
+          // Provedeme náš překlad.
+          translateCalendar();
+
+          // Až když je hotovo, znovu ho připojíme, aby čekal na další kliknutí od uživatele.
+          observer.observe(calendarElement, {
+            childList: true,
+            subtree: true,
+          });
+        });
+        
+        // Poprvé ho spustíme.
         observer.observe(calendarElement, {
           childList: true,
           subtree: true,
@@ -92,8 +101,6 @@ const New = (): JSX.Element => {
       }
     }, 100);
 
-    // Důležitý úklid: pokud uživatel opustí stránku dříve, než se kalendář načte,
-    // interval se zruší.
     return () => clearInterval(intervalId);
 
   }, []);
