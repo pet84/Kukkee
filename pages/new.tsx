@@ -40,12 +40,11 @@ const New = (): JSX.Element => {
       "All-day": "Celý den",
     };
 
-    const translateCalendar = () => {
+    const translateCalendar = (): void => {
       document.querySelectorAll(".rat-DayHeader_day").forEach((el) => {
         const text = el.textContent || "";
         const [day, num] = text.split(" ");
         if (translations[day]) {
-          // ✅ OPRAVA: Vypnutí pravidla no-param-reassign pro tento řádek
           // eslint-disable-next-line no-param-reassign
           el.textContent = `${translations[day]} ${num}`;
         }
@@ -59,16 +58,15 @@ const New = (): JSX.Element => {
             text = text.replace(new RegExp(key, "g"), translations[key]);
           }
         });
-        // ✅ OPRAVA: Vypnutí pravidla no-param-reassign i zde
         // eslint-disable-next-line no-param-reassign
         intervalEl.textContent = text;
       }
       
       const allDayEl = document.querySelector(".rat-Week_allDayLabel");
       if (allDayEl) {
-        const textContent = allDayEl.textContent;
+        // ✅ OPRAVA: Použití destrukturace pro splnění pravidla `prefer-destructuring`
+        const { textContent } = allDayEl;
         if (textContent && translations[textContent]) {
-          // ✅ OPRAVA: A do třetice i zde
           // eslint-disable-next-line no-param-reassign
           allDayEl.textContent = translations[textContent];
         }
