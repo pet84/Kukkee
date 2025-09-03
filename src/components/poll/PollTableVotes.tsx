@@ -41,7 +41,7 @@ const PollTableVotes = (props: {
         <tbody>
           <tr>
             <td className="poll-table-total-participants">
-              {pollFromDB.votes?.length} PARTICIPANTS
+              {pollFromDB.votes?.length} ÚČASTNÍKŮ
             </td>
             {sortedTimes.map((time: Time) => (
               <td key={time.start} className="poll-slot-total-votes">
