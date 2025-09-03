@@ -1,8 +1,10 @@
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import "dayjs/locale/cs"; // import češtiny
 import { Time } from "../../models/poll";
 
 dayjs.extend(localizedFormat);
+dayjs.locale("cs"); // nastavení globálně na češtinu
 
 const PollDateTime = (props: { time: Time }): JSX.Element => {
   const { time } = props;
