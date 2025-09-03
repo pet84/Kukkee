@@ -33,14 +33,14 @@ const PollVoter = (props: {
   return (
     <>
       <Head>
-        <title>Finalise time | {NEXT_PUBLIC_BRAND_NAME}</title>
+        <title>Potvrdit termín | {NEXT_PUBLIC_BRAND_NAME}</title>
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <Layout>
         <div className="global-page-heading">
-          <Container className="global-container">Finalise time</Container>
+          <Container className="global-container">Potvrdit termín</Container>
         </div>
         <div className="global-page-section">
           <Container className="global-container">
