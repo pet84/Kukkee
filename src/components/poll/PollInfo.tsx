@@ -15,7 +15,7 @@ const PollInfo = (props: { poll: PollFromDB }): JSX.Element => {
         variant={poll.open ? "success" : "secondary"}
         className={poll.open ? "poll-badge-open" : "poll-badge-closed"}
       >
-        {poll.open ? "Open" : "Closed"}
+        {poll.open ? "Otevřená" : "Uzavřená"}
       </Badge>
       <span className="poll-info-title">{poll.title}</span>
       {poll.description && (
