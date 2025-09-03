@@ -10,9 +10,14 @@ import ResponseMessage from "../src/components/ResponseMessage";
 import { Time, Poll, PollType } from "../src/models/poll";
 import { createPoll } from "../src/utils/api/server";
 
+// --- lokalizace dayjs ---
+import dayjs from "dayjs";
+import "dayjs/locale/cs";
+dayjs.locale("cs");
+// -------------------------
+
 const NEXT_PUBLIC_BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "";
 
-// typings aren't available for react-available-times
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AvailableTimes: any = dynamic(() => import("react-available-times"), {
   ssr: false,
@@ -63,7 +68,6 @@ const New = (): JSX.Element => {
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
     const { name, value } = e.target;
-
     setPollDetails({
       ...pollDetails,
       [name]: value,
@@ -212,7 +216,7 @@ const New = (): JSX.Element => {
                   onChange={handlePollTypeChange}
                   defaultValue="protected"
                 >
-                  <option value="protected">Chráněná</option>
+                  <option value="protected">Soukromá</option>
                   <option value="public">Veřejná</option>
                 </Form.Control>
               </Form.Group>
@@ -222,6 +226,8 @@ const New = (): JSX.Element => {
                 weekStartsOn="monday"
                 onChange={onTimesChange}
                 height="42rem"
+                dateFormat="DD.MM."   // český formát datumu
+                timeFormat="HH:mm"    // 24h formát času
               />
             </Jumbotron>
             <Button
