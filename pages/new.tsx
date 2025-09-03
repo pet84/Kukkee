@@ -3,7 +3,7 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { Form, Container, Jumbotron, Button, Spinner } from "react-bootstrap";
 import { format } from "url";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // <-- Přidán import useEffect
 import { useSession } from "next-auth/react";
 import Layout from "../src/components/Layout";
 import ResponseMessage from "../src/components/ResponseMessage";
@@ -12,8 +12,6 @@ import { createPoll } from "../src/utils/api/server";
 
 const NEXT_PUBLIC_BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "";
 
-// typings aren't available for react-available-times
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AvailableTimes: any = dynamic(() => import("react-available-times"), {
   ssr: false,
 });
@@ -28,6 +26,63 @@ const New = (): JSX.Element => {
       });
     },
   });
+
+  // ✅ PŘIDÁNO: Efekt pro překlad kalendáře po vykreslení
+  useEffect(() => {
+    const translations = {
+      Sun: "Ne", Mon: "Po", Tue: "Út", Wed: "St", Thu: "Čt", Fri: "Pá", Sat: "So",
+      Jan: "Led", Feb: "Úno", Mar: "Bře", Apr: "Dub", May: "Kvě", Jun: "Čer",
+      Jul: "Čvc", Aug: "Srp", Sep: "Zář", Oct: "Říj", Nov: "Lis", Dec: "Pro",
+      "All-day": "Celý den",
+    };
+
+    const translateCalendar = () => {
+      // Překlad dnů v záhlaví (např. "Sun 31" -> "Ne 31")
+      document.querySelectorAll(".rat-DayHeader_day").forEach((el) => {
+        const text = el.textContent || "";
+        const [day, num] = text.split(" ");
+        if (translations[day]) {
+          el.textContent = `${translations[day]} ${num}`;
+        }
+      });
+
+      // Překlad rozsahu měsíců (např. "Aug 31 – Sep 6" -> "Srp 31 – Zář 6")
+      const intervalEl = document.querySelector(".rat-AvailableTimes_interval");
+      if (intervalEl) {
+        let text = intervalEl.textContent || "";
+        Object.keys(translations).forEach((key) => {
+          if (text.includes(key)) {
+            text = text.replace(new RegExp(key, "g"), translations[key]);
+          }
+        });
+        intervalEl.textContent = text;
+      }
+      
+      // Překlad "All-day"
+      const allDayEl = document.querySelector(".rat-Week_allDayLabel");
+      if (allDayEl && translations[allDayEl.textContent]) {
+          allDayEl.textContent = translations[allDayEl.textContent];
+      }
+    };
+
+    // Knihovna překresluje obsah bez znovunačtení stránky,
+    // musíme na to reagovat. Sledujeme změny a po každé překreslíme.
+    const observer = new MutationObserver(() => {
+        translateCalendar();
+    });
+    
+    const calendarElement = document.querySelector('.rat-AvailableTimes_component');
+    if (calendarElement) {
+        observer.observe(calendarElement, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    // Uklidíme po sobě, když komponenta zmizí
+    return () => observer.disconnect();
+
+  }, []); // Prázdné pole znamená, že se tento kód spustí jen jednou po načtení komponenty
 
   const [pollDetails, setPollDetails] = useState<{
     pollTitle: string;
@@ -212,7 +267,6 @@ const New = (): JSX.Element => {
                   onChange={handlePollTypeChange}
                   defaultValue="protected"
                 >
-                  {/* ✅ ZMĚNA ZDE */}
                   <option value="protected">Soukromá</option>
                   <option value="public">Veřejná</option>
                 </Form.Control>
