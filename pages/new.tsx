@@ -18,18 +18,6 @@ const AvailableTimes: any = dynamic(() => import("react-available-times"), {
   ssr: false,
 });
 
-// ✅ PŘIDÁNO: Objekt s českými překlady pro kalendář
-const czechTexts = {
-  sMon: "Po",
-  sTue: "Út",
-  sWed: "St",
-  sThu: "Čt",
-  sFri: "Pá",
-  sSat: "So",
-  sSun: "Ne",
-  save: "Uložit",
-};
-
 const New = (): JSX.Element => {
   const { data: session } = useSession({
     required: true,
@@ -224,7 +212,8 @@ const New = (): JSX.Element => {
                   onChange={handlePollTypeChange}
                   defaultValue="protected"
                 >
-                  <option value="protected">Chráněná</option>
+                  {/* ✅ ZMĚNA ZDE */}
+                  <option value="protected">Soukromá</option>
                   <option value="public">Veřejná</option>
                 </Form.Control>
               </Form.Group>
@@ -234,7 +223,6 @@ const New = (): JSX.Element => {
                 weekStartsOn="mon"
                 onChange={onTimesChange}
                 height="42rem"
-                texts={czechTexts} // ✅ PŘIDÁNO: Předání překladů komponentě
               />
             </Jumbotron>
             <Button
