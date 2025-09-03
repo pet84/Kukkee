@@ -3,7 +3,7 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { Form, Container, Jumbotron, Button, Spinner } from "react-bootstrap";
 import { format } from "url";
-import { useState, useEffect } from "react"; // <-- Přidán import useEffect
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Layout from "../src/components/Layout";
 import ResponseMessage from "../src/components/ResponseMessage";
@@ -16,6 +16,12 @@ const AvailableTimes: any = dynamic(() => import("react-available-times"), {
   ssr: false,
 });
 
+// ✅ OPRAVA: Definujeme typ pro náš překladový slovník.
+// Říkáme tím: "Je to objekt, kde jakýkoliv klíč typu string vrátí hodnotu typu string".
+type TranslationMap = {
+  [key: string]: string;
+};
+
 const New = (): JSX.Element => {
   const { data: session } = useSession({
     required: true,
@@ -27,9 +33,9 @@ const New = (): JSX.Element => {
     },
   });
 
-  // ✅ PŘIDÁNO: Efekt pro překlad kalendáře po vykreslení
   useEffect(() => {
-    const translations = {
+    // ✅ OPRAVA: Řekneme TypeScriptu, že náš objekt tento typ používá.
+    const translations: TranslationMap = {
       Sun: "Ne", Mon: "Po", Tue: "Út", Wed: "St", Thu: "Čt", Fri: "Pá", Sat: "So",
       Jan: "Led", Feb: "Úno", Mar: "Bře", Apr: "Dub", May: "Kvě", Jun: "Čer",
       Jul: "Čvc", Aug: "Srp", Sep: "Zář", Oct: "Říj", Nov: "Lis", Dec: "Pro",
@@ -37,16 +43,15 @@ const New = (): JSX.Element => {
     };
 
     const translateCalendar = () => {
-      // Překlad dnů v záhlaví (např. "Sun 31" -> "Ne 31")
       document.querySelectorAll(".rat-DayHeader_day").forEach((el) => {
         const text = el.textContent || "";
         const [day, num] = text.split(" ");
+        // Nyní už TypeScript ví, že je bezpečné přistupovat k translations[day]
         if (translations[day]) {
           el.textContent = `${translations[day]} ${num}`;
         }
       });
 
-      // Překlad rozsahu měsíců (např. "Aug 31 – Sep 6" -> "Srp 31 – Zář 6")
       const intervalEl = document.querySelector(".rat-AvailableTimes_interval");
       if (intervalEl) {
         let text = intervalEl.textContent || "";
@@ -58,15 +63,12 @@ const New = (): JSX.Element => {
         intervalEl.textContent = text;
       }
       
-      // Překlad "All-day"
       const allDayEl = document.querySelector(".rat-Week_allDayLabel");
       if (allDayEl && translations[allDayEl.textContent]) {
           allDayEl.textContent = translations[allDayEl.textContent];
       }
     };
 
-    // Knihovna překresluje obsah bez znovunačtení stránky,
-    // musíme na to reagovat. Sledujeme změny a po každé překreslíme.
     const observer = new MutationObserver(() => {
         translateCalendar();
     });
@@ -79,10 +81,9 @@ const New = (): JSX.Element => {
         });
     }
 
-    // Uklidíme po sobě, když komponenta zmizí
     return () => observer.disconnect();
 
-  }, []); // Prázdné pole znamená, že se tento kód spustí jen jednou po načtení komponenty
+  }, []);
 
   const [pollDetails, setPollDetails] = useState<{
     pollTitle: string;
@@ -237,74 +238,3 @@ const New = (): JSX.Element => {
               <Form.Group controlId="pollDescription">
                 <Form.Label className="form-label">
                   Popis (nepovinné)
-                </Form.Label>
-                <Form.Control
-                  className="form-text"
-                  type="text"
-                  name="pollDescription"
-                  placeholder="Řekněte účastníkům více informací"
-                  onChange={handlePollDetailsChange}
-                />
-              </Form.Group>
-              <Form.Group controlId="pollLocation">
-                <Form.Label className="form-label">
-                  Místo (nepovinné)
-                </Form.Label>
-                <Form.Control
-                  className="form-text"
-                  type="text"
-                  name="pollLocation"
-                  placeholder="Kde se to bude konat?"
-                  onChange={handlePollDetailsChange}
-                />
-              </Form.Group>
-              <Form.Group controlId="pollType">
-                <Form.Label className="form-label">Typ ankety</Form.Label>
-                <Form.Control
-                  as="select"
-                  className="form-select"
-                  name="pollType"
-                  onChange={handlePollTypeChange}
-                  defaultValue="protected"
-                >
-                  <option value="protected">Soukromá</option>
-                  <option value="public">Veřejná</option>
-                </Form.Control>
-              </Form.Group>
-            </Jumbotron>
-            <Jumbotron className="new-poll-timeslot-jumbo">
-              <AvailableTimes
-                weekStartsOn="mon"
-                onChange={onTimesChange}
-                height="42rem"
-              />
-            </Jumbotron>
-            <Button
-              className="global-primary-button mb-3"
-              onClick={handleSubmit}
-              disabled={disabled}
-            >
-              {!disabled ? (
-                `Vytvořit anketu`
-              ) : (
-                <>
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    className="form-button-spinner"
-                  />
-                </>
-              )}
-            </Button>
-            <ResponseMessage response={response} setResponse={setResponse} />
-          </Container>
-        </div>
-      </Layout>
-    </>
-  );
-};
-
-export default New;
