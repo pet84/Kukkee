@@ -43,7 +43,7 @@ const PollVoter = (props: {
   return (
     <>
       <Head>
-        <title>Mark your availablity | {NEXT_PUBLIC_BRAND_NAME}</title>
+        <title>Označte svoji dostupnost | {NEXT_PUBLIC_BRAND_NAME}</title>
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,7 +51,7 @@ const PollVoter = (props: {
       <Layout>
         <div className="global-page-heading">
           <Container className="global-container">
-            Mark your availablity
+            Označte svoji dostupnost
           </Container>
         </div>
         <div className="global-page-section">
