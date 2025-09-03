@@ -25,19 +25,19 @@ const Dashboard = (props: { polls: PollFromDB[] }): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Dashboard | {NEXT_PUBLIC_BRAND_NAME}</title>
+        <title>Přehled | {NEXT_PUBLIC_BRAND_NAME}</title>
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <Layout>
         <div className="global-page-heading">
-          <Container className="global-container">Dashboard</Container>
+          <Container className="global-container">Přehled</Container>
         </div>
         <div className="global-page-section">
           <Container className="global-container">
             {polls.filter((poll) => poll.open).length > 0 && (
-              <span className="dashboard-polls-heading">Open polls</span>
+              <span className="dashboard-polls-heading">Otevřené ankety</span>
             )}
             {polls.filter((poll) => poll.open).length > 0 &&
               polls
@@ -59,9 +59,9 @@ const Dashboard = (props: { polls: PollFromDB[] }): JSX.Element => {
                 ))}
             {polls.filter((poll) => poll.open).length === 0 && (
               <span className="dashboard-polls-heading">
-                You don't have any open polls.{" "}
+                Nemáte žádné otevřené ankety.{" "}
                 <Link href="/new">
-                  <a>Create one now</a>
+                  <a>Vytvořte novou</a>
                 </Link>
                 !
               </span>
