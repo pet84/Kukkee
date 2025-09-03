@@ -7,6 +7,7 @@ import {
 } from "../src/helpers";
 import connectToDatabase from "../src/utils/db";
 
+// Tato komponenta se nyní bude renderovat na serveru pro každý požadavek
 export default async (
   req: NextApiRequest,
   res: NextApiResponse
@@ -90,3 +91,10 @@ export default async (
     }
   }
 };
+
+// PŘIDÁNO: Tato funkce říká Next.js, aby stránku renderoval na serveru (SSR)
+export async function getServerSideProps() {
+  return {
+    props: {}, // Můžeme předat props stránce, ale zde to není potřeba
+  };
+}
