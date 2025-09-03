@@ -34,14 +34,14 @@ const SubmitFinalTime = (props: {
         if (submitFinalTimeResponse.statusCode === 201) {
           setResponse({
             status: true,
-            msg: "Time has been finalised and the poll has been closed",
+            msg: "Termín byl úspěšně uzavřen a anketa je uzavřena.",
           });
           Router.reload();
         } else {
           setDisabled(false);
           setResponse({
             status: true,
-            msg: "Please try again later.",
+            msg: "Zkuste to prosím znovu později.",
           });
           Router.reload();
         }
@@ -49,14 +49,14 @@ const SubmitFinalTime = (props: {
         setDisabled(false);
         setResponse({
           status: true,
-          msg: "Please try again later.",
+          msg: "Zkuste to prosím znovu později.",
         });
         Router.reload();
       }
     } else {
       setResponse({
         status: true,
-        msg: "Please choose the final time.",
+        msg: "Prosím vyberte finální termín.",
       });
     }
   };
@@ -70,7 +70,7 @@ const SubmitFinalTime = (props: {
         onClick={handleSubmit}
       >
         {!disabled ? (
-          `Finalise time`
+          `Uzavřít termín`
         ) : (
           <>
             <Spinner
