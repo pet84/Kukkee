@@ -27,7 +27,7 @@ const SubmitTimes = (props: {
     if (!newVote.username) {
       setResponse({
         status: true,
-        msg: "Please enter your name.",
+        msg: "Prosím zadejte své jméno.",
       });
       return;
     }
@@ -38,7 +38,7 @@ const SubmitTimes = (props: {
     ) {
       setResponse({
         status: true,
-        msg: "You cannot vote more than once.",
+        msg: "Nemůžete hlasovat více než jednou.",
       });
       return;
     }
@@ -46,7 +46,7 @@ const SubmitTimes = (props: {
     if (newVote.times.length === 0) {
       setResponse({
         status: true,
-        msg: "Please select at least one available time slot.",
+        msg: "Prosím vyberte alespoň jeden dostupný termín.",
       });
       return;
     }
@@ -62,26 +62,26 @@ const SubmitTimes = (props: {
       if (submitTimeResponse && submitTimeResponse.statusCode === 201) {
         setResponse({
           status: true,
-          msg: "Your vote has been successfully recorded.",
+          msg: "Váš hlas byl úspěšně zaznamenán.",
         });
         Router.reload();
       } else if (submitTimeResponse && submitTimeResponse.statusCode === 404) {
         setResponse({
           status: true,
-          msg: "Poll has been deleted.",
+          msg: "Anketa byla smazána.",
         });
         Router.push("/");
       } else if (submitTimeResponse && submitTimeResponse.statusCode === 400) {
         setResponse({
           status: true,
-          msg: "Poll has been closed.",
+          msg: "Anketa byla uzavřena.",
         });
         Router.reload();
       } else {
         setDisabled(false);
         setResponse({
           status: true,
-          msg: "Please try again later.",
+          msg: "Zkuste to prosím znovu později.",
         });
         Router.reload();
       }
@@ -89,7 +89,7 @@ const SubmitTimes = (props: {
       setDisabled(false);
       setResponse({
         status: true,
-        msg: "Please try again later.",
+        msg: "Zkuste to prosím znovu později.",
       });
     }
   };
@@ -103,7 +103,7 @@ const SubmitTimes = (props: {
         onClick={handleSubmit}
       >
         {!disabled ? (
-          `Mark your availability`
+          `Odeslat dostupnost`
         ) : (
           <>
             <Spinner
