@@ -36,14 +36,14 @@ const SignIn = (props: {
     if (!username) {
       setResponse({
         status: true,
-        msg: "Please enter your username.",
+        msg: "Zadejte prosím uživatelské jméno.",
       });
       return;
     }
     if (!password) {
       setResponse({
         status: true,
-        msg: "Please enter your password.",
+        msg: "Zadejte prosím heslo.",
       });
       return;
     }
@@ -76,7 +76,7 @@ const SignIn = (props: {
           setDisabled(false);
           setResponse({
             status: true,
-            msg: "Please check your username and password.",
+            msg: "Zkontrolujte prosím uživatelské jméno a heslo.",
           });
           return;
         }
@@ -84,7 +84,7 @@ const SignIn = (props: {
         setDisabled(false);
         setResponse({
           status: true,
-          msg: "Please try again later.",
+          msg: "Zkuste to prosím znovu později.",
         });
       }
     } else {
@@ -94,7 +94,6 @@ const SignIn = (props: {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
-
     setUserCredentials({ ...userCredentials, [name]: value });
   };
 
@@ -114,17 +113,17 @@ const SignIn = (props: {
               hidden
             />
             <Form.Group controlId="username">
-              <Form.Label className="form-label">Username</Form.Label>
+              <Form.Label className="form-label">Uživatelské jméno</Form.Label>
               <Form.Control
                 className="form-text"
                 type="text"
-                placeholder="Username"
+                placeholder="Uživatelské jméno"
                 name="username"
                 onChange={handleChange}
               />
             </Form.Group>
             <Form.Group controlId="password">
-              <Form.Label className="form-label">Password</Form.Label>
+              <Form.Label className="form-label">Heslo</Form.Label>
               <Form.Control
                 className="form-text"
                 type="password"
@@ -141,7 +140,7 @@ const SignIn = (props: {
                 type="submit"
               >
                 {!disabled ? (
-                  `Sign in`
+                  `Přihlásit se`
                 ) : (
                   <>
                     <Spinner
@@ -159,9 +158,9 @@ const SignIn = (props: {
           </Form>
         </Jumbotron>
         <Jumbotron className="auth-second-jumbo">
-          New here?{" "}
+          Jste tu poprvé?{" "}
           <Link href="/auth/signup">
-            <a>Sign up</a>
+            <a>Vytvořit účet</a>
           </Link>
           .
         </Jumbotron>
