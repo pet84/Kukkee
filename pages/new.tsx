@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import KukkeePoll, { Vote, PollDoc } from "../../../../src/models/poll";
+import KukkeePoll, { Vote, PollDoc } from "../src/models/poll";
 import {
   isTimePresentInPollTimes,
   isUserPresentInVotes,
-} from "../../../../src/helpers";
-import connectToDatabase from "../../../../src/utils/db";
+} from "../src/helpers";
+import connectToDatabase from "../src/utils/db";
 
 export default async (
   req: NextApiRequest,
