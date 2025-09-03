@@ -12,6 +12,7 @@ import { createPoll } from "../src/utils/api/server";
 
 const NEXT_PUBLIC_BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AvailableTimes: any = dynamic(() => import("react-available-times"), {
   ssr: false,
 });
@@ -44,6 +45,8 @@ const New = (): JSX.Element => {
         const text = el.textContent || "";
         const [day, num] = text.split(" ");
         if (translations[day]) {
+          // ✅ OPRAVA: Vypnutí pravidla no-param-reassign pro tento řádek
+          // eslint-disable-next-line no-param-reassign
           el.textContent = `${translations[day]} ${num}`;
         }
       });
@@ -56,16 +59,17 @@ const New = (): JSX.Element => {
             text = text.replace(new RegExp(key, "g"), translations[key]);
           }
         });
+        // ✅ OPRAVA: Vypnutí pravidla no-param-reassign i zde
+        // eslint-disable-next-line no-param-reassign
         intervalEl.textContent = text;
       }
       
       const allDayEl = document.querySelector(".rat-Week_allDayLabel");
-      // ✅ OPRAVA ZDE:
-      // Nejprve zkontrolujeme, zda element existuje.
       if (allDayEl) {
-        // Poté získáme jeho text a zkontrolujeme, zda není null A ZÁROVEŇ existuje v našich překladech.
         const textContent = allDayEl.textContent;
         if (textContent && translations[textContent]) {
+          // ✅ OPRAVA: A do třetice i zde
+          // eslint-disable-next-line no-param-reassign
           allDayEl.textContent = translations[textContent];
         }
       }
