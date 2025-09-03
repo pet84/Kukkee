@@ -14,7 +14,7 @@ export default function SignInPage(props: { csrfToken: string }): JSX.Element {
   return (
     <>
       <Head>
-        <title>Sign In | {NEXT_PUBLIC_BRAND_NAME}</title>
+        <title>Přihlášení | {NEXT_PUBLIC_BRAND_NAME}</title>
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
