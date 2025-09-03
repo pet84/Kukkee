@@ -25,20 +25,20 @@ const DeletePoll = (props: {
       if (deletePollResponse && deletePollResponse.statusCode === 200) {
         setResponse({
           status: true,
-          msg: "Poll been successfully deleted.",
+          msg: "Anketa byla úspěšně smazána.",
         });
         Router.push("/");
       } else {
         setResponse({
           status: true,
-          msg: "Please try again later.",
+          msg: "Zkuste to prosím později.",
         });
         Router.reload();
       }
     } catch (err) {
       setResponse({
         status: true,
-        msg: "Please try again later.",
+        msg: "Zkuste to prosím později.",
       });
     }
   };
