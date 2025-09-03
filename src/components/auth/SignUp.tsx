@@ -30,28 +30,28 @@ const SignUp = (): JSX.Element => {
     if (!username) {
       setResponse({
         status: true,
-        msg: "Please provide a username.",
+        msg: "Zadejte prosím uživatelské jméno.",
       });
       return;
     }
     if (!email) {
       setResponse({
         status: true,
-        msg: "Please provide a email address.",
+        msg: "Zadejte prosím e-mailovou adresu.",
       });
       return;
     }
     if (!validEmail.test(email)) {
       setResponse({
         status: true,
-        msg: "Please provide a valid email address.",
+        msg: "Zadejte prosím platnou e-mailovou adresu.",
       });
       return;
     }
     if (!password) {
       setResponse({
         status: true,
-        msg: "Please provide a password.",
+        msg: "Zadejte prosím heslo.",
       });
       return;
     }
@@ -59,7 +59,7 @@ const SignUp = (): JSX.Element => {
       setResponse({
         status: true,
         msg:
-          "Password must be between 8 to 15 characters, containing at least one lowercase letter, one uppercase letter, one numeric digit, and one special character.",
+          "Heslo musí mít 8–15 znaků a obsahovat alespoň jedno malé písmeno, jedno velké písmeno, jednu číslici a jeden speciální znak.",
       });
       return;
     }
@@ -91,7 +91,7 @@ const SignUp = (): JSX.Element => {
       setDisabled(false);
       setResponse({
         status: true,
-        msg: "Please try again later.",
+        msg: "Zkuste to prosím znovu později.",
       });
     }
   };
@@ -114,27 +114,27 @@ const SignUp = (): JSX.Element => {
         <Jumbotron className="auth-first-jumbo">
           <Form>
             <Form.Group controlId="username">
-              <Form.Label className="form-label">Username</Form.Label>
+              <Form.Label className="form-label">Uživatelské jméno</Form.Label>
               <Form.Control
                 className="form-text"
                 type="text"
-                placeholder="Username"
+                placeholder="Uživatelské jméno"
                 name="username"
                 onChange={handleChange}
               />
             </Form.Group>
             <Form.Group controlId="email">
-              <Form.Label className="form-label">Email address</Form.Label>
+              <Form.Label className="form-label">E-mailová adresa</Form.Label>
               <Form.Control
                 className="form-text"
                 type="text"
-                placeholder="Email address"
+                placeholder="E-mailová adresa"
                 name="email"
                 onChange={handleChange}
               />
             </Form.Group>
             <Form.Group controlId="password">
-              <Form.Label className="form-label">Password</Form.Label>
+              <Form.Label className="form-label">Heslo</Form.Label>
               <Form.Control
                 className="form-text "
                 type="password"
@@ -151,7 +151,7 @@ const SignUp = (): JSX.Element => {
                 type="submit"
               >
                 {!disabled ? (
-                  `Sign up`
+                  `Vytvořit účet`
                 ) : (
                   <>
                     <Spinner
@@ -169,9 +169,9 @@ const SignUp = (): JSX.Element => {
           </Form>
         </Jumbotron>
         <Jumbotron className="auth-second-jumbo">
-          Have an account?{" "}
+          Už máte účet?{" "}
           <a onClick={(): Promise<undefined> => signIn()} aria-hidden="true">
-            Sign in
+            Přihlásit se
           </a>
           .
         </Jumbotron>
