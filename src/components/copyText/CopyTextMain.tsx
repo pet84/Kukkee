@@ -45,7 +45,7 @@ const CopyTextMain = (props: {
 
   const popover = (
     <Popover id="popover-basic">
-      <Popover.Content>Copied!</Popover.Content>
+      <Popover.Content>Zkopírováno!</Popover.Content>
     </Popover>
   );
 
