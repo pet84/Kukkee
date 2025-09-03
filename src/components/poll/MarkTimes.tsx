@@ -15,6 +15,7 @@ const MarkTimes = (props: {
     times.reduce((obj, cur) => ({ ...obj, [cur.start]: 0 }), {})
   );
 
+  // Můžeš nechat anglicky kvůli CSS, nebo přepsat na ["ne", "ano", "pokud-bude-třeba"]
   const statusValues = ["no", "yes", "if-need-be"];
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -32,18 +33,18 @@ const MarkTimes = (props: {
     let newTimes = newVote.times;
 
     if (newTimeBoxStatus === 1) {
-      // yes
+      // ano
       newTimes = newTimes.filter((item) => item.start !== time.start);
       newTimes.push(time);
       setNewVote({ username: newVote.username, times: newTimes });
     } else if (newTimeBoxStatus === 2) {
-      // if-need-be
+      // pokud bude třeba
       newTimes = newTimes.filter((item) => item.start !== time.start);
       time.ifNeedBe = true;
       newTimes.push(time);
       setNewVote({ username: newVote.username, times: newTimes });
     } else {
-      // no
+      // ne
       newTimes = newTimes.filter((item) => item.start !== time.start);
       setNewVote({ username: newVote.username, times: newTimes });
     }
@@ -57,7 +58,7 @@ const MarkTimes = (props: {
           <Form.Control
             className="poll-mark-time-name"
             type="text"
-            placeholder="Your name"
+            placeholder="Vaše jméno"
             onChange={handleNameChange}
           />
         )}
