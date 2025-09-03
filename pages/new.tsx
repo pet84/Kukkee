@@ -1,27 +1,30 @@
-import Router from "next/router";
 import Head from "next/head";
+import Router from "next/router";
 import dynamic from "next/dynamic";
-import { Form, Container, Jumbotron, Button, Spinner } from "react-bootstrap";
-import { format } from "url";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { Form, Container, Jumbotron, Button, Spinner } from "react-bootstrap";
+import { format } from "url";
+
+// --- externí knihovny (musí být před lokálními importy) ---
+import dayjs from "dayjs";
+import "dayjs/locale/cs";
+dayjs.locale("cs");
+// -----------------------------------------------------------
+
+// --- lokální importy ---
 import Layout from "../src/components/Layout";
 import ResponseMessage from "../src/components/ResponseMessage";
 import { Time, Poll, PollType } from "../src/models/poll";
 import { createPoll } from "../src/utils/api/server";
 
-// --- lokalizace dayjs ---
-import dayjs from "dayjs";
-import "dayjs/locale/cs";
-dayjs.locale("cs");
-// -------------------------
-
-const NEXT_PUBLIC_BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "";
-
+// typings nejsou pro react-available-times
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AvailableTimes: any = dynamic(() => import("react-available-times"), {
   ssr: false,
 });
+
+const NEXT_PUBLIC_BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || "";
 
 const New = (): JSX.Element => {
   const { data: session } = useSession({
@@ -102,7 +105,7 @@ const New = (): JSX.Element => {
       });
       return;
     }
-    if (!pollTimes || (pollTimes && pollTimes?.length === 0)) {
+    if (!pollTimes || (pollTimes && pollTimes.length === 0)) {
       setResponse({
         status: true,
         msg: "Vyberte prosím alespoň jeden termín pro pozvané.",
@@ -130,11 +133,7 @@ const New = (): JSX.Element => {
 
     try {
       setDisabled(true);
-
-      const createPollResponse = await createPoll({
-        poll,
-      });
-
+      const createPollResponse = await createPoll({ poll });
       if (createPollResponse.statusCode === 201) {
         Router.push(
           "/poll/[id]",
@@ -147,7 +146,7 @@ const New = (): JSX.Element => {
           msg: "Vytvoření ankety se nezdařilo, zkuste to prosím později.",
         });
       }
-    } catch (err) {
+    } catch {
       setDisabled(false);
       setResponse({
         status: true,
@@ -184,9 +183,7 @@ const New = (): JSX.Element => {
                 />
               </Form.Group>
               <Form.Group controlId="pollDescription">
-                <Form.Label className="form-label">
-                  Popis (nepovinné)
-                </Form.Label>
+                <Form.Label className="form-label">Popis (nepovinné)</Form.Label>
                 <Form.Control
                   className="form-text"
                   type="text"
@@ -196,9 +193,7 @@ const New = (): JSX.Element => {
                 />
               </Form.Group>
               <Form.Group controlId="pollLocation">
-                <Form.Label className="form-label">
-                  Místo (nepovinné)
-                </Form.Label>
+                <Form.Label className="form-label">Místo (nepovinné)</Form.Label>
                 <Form.Control
                   className="form-text"
                   type="text"
@@ -221,22 +216,24 @@ const New = (): JSX.Element => {
                 </Form.Control>
               </Form.Group>
             </Jumbotron>
+
             <Jumbotron className="new-poll-timeslot-jumbo">
               <AvailableTimes
                 weekStartsOn="monday"
                 onChange={onTimesChange}
                 height="42rem"
-                dateFormat="DD.MM."   // český formát datumu
-                timeFormat="HH:mm"    // 24h formát času
+                dateFormat="DD.MM."  // český formát datumu
+                timeFormat="HH:mm"   // 24h formát času
               />
             </Jumbotron>
+
             <Button
               className="global-primary-button mb-3"
               onClick={handleSubmit}
               disabled={disabled}
             >
               {!disabled ? (
-                `Vytvořit anketu`
+                "Vytvořit anketu"
               ) : (
                 <>
                   <Spinner
@@ -250,6 +247,7 @@ const New = (): JSX.Element => {
                 </>
               )}
             </Button>
+
             <ResponseMessage response={response} setResponse={setResponse} />
           </Container>
         </div>
