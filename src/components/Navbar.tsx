@@ -23,16 +23,16 @@ const NavBar = (): JSX.Element => {
             {session && (
               <>
                 <Link href="/new">
-                  <a className="navbar-link new-poll">+ New poll</a>
+                  <a className="navbar-link new-poll">+ Nová anketa</a>
                 </Link>
                 <Link href="/">
-                  <a className="navbar-link">Dashboard</a>
+                  <a className="navbar-link">Přehled</a>
                 </Link>
               </>
             )}
             {!session && router.pathname !== "/auth/signup" && (
               <Link href="/auth/signup">
-                <a className="navbar-link">Sign up</a>
+                <a className="navbar-link">Registrace</a>
               </Link>
             )}
             {!session && router.pathname !== "/auth/signin" && (
@@ -41,7 +41,7 @@ const NavBar = (): JSX.Element => {
                 className="navbar-link"
                 aria-hidden="true"
               >
-                Sign in
+                Přihlášení
               </a>
             )}
             {session && (
@@ -52,7 +52,7 @@ const NavBar = (): JSX.Element => {
                 className="navbar-link"
                 aria-hidden="true"
               >
-                Sign out
+                Odhlásit se
               </a>
             )}
           </Nav>
