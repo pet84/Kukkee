@@ -150,43 +150,4 @@ main {
 @import "./auth.scss";
 @import "./dashboard.scss";
 
-/*
- * Překlad pro kalendář react-available-times
- */
 
-/* Cílíme na hlavičku dne v týdnu */
-.rat-weekday {
-  /* Skryjeme původní text (Sun, Mon, atd.) */
-  font-size: 0 !important;
-}
-
-/* Přidáme náš vlastní text pomocí :after pseudo-elementu */
-.rat-weekday:after {
-  /* Zobrazíme text znovu */
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-}
-
-/* Nyní definujeme překlady pro každý den zvlášť */
-.rat-weekday-0:after {
-  content: "Ne";
-}
-.rat-weekday-1:after {
-  content: "Po";
-}
-.rat-weekday-2:after {
-  content: "Út";
-}
-.rat-weekday-3:after {
-  content: "St";
-}
-.rat-weekday-4:after {
-  content: "Čt";
-}
-.rat-weekday-5:after {
-  content: "Pá";
-}
-.rat-weekday-6:after {
-  content: "So";
-}
